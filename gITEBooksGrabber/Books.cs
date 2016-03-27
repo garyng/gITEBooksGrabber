@@ -70,6 +70,14 @@ namespace gITEBooksGrabber
 						await saveJSON(DB_FILENAME);
 					}
 				}
+				else
+				{
+					if (!b.Downloaded)
+					{
+						await saveBook(b);
+						await saveJSON(DB_FILENAME);
+					}
+				}
 			}
 		}
 
