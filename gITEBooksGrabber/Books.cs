@@ -149,8 +149,7 @@ namespace gITEBooksGrabber
 			{
 				await downloadFile(b.DownloadLink, b.SavePath, b.URL, new Progress<string>(p =>
 				{
-					Console.Write(string.Format("\rDownloading Book #{0} : {1}", b.ID, b.Title).PadRight(Console.BufferWidth - p.Length - 1));
-					Console.Write(p);
+					Console.Write(string.Format("\rDownloading Book #{0} : {1}", b.ID, b.Title).PadRight(Console.BufferWidth - p.Length - 1) + p);
 				}));
 				b.Downloaded = true;
 			}
