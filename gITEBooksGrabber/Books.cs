@@ -157,13 +157,19 @@ namespace gITEBooksGrabber
 			{
 				Console.WriteLine(string.Format("\rUnable to download Book #{0} : {1}", b.ID, b.Title).PadRight(Console.BufferWidth));
 				Console.WriteLine(ex.Message);
-
+				deleteFile(b.SavePath);
 				b.Downloaded = false;
 				return false;
 			}
 			return true;
 		}
-
+		private void deleteFile(string filePath)
+		{
+			if (File.Exists(filePath))
+			{
+				File.Delete(filePath);
+			}
+		}
 		private async Task downloadFile(string url, string filePath, string referer, IProgress<string> progress)
 		{
 			HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
