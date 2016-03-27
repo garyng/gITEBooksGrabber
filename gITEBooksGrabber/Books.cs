@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ namespace gITEBooksGrabber
 		private Dictionary<int, Book> _dBooks = new Dictionary<int, Book>();
 
 		private const string DB_FILENAME = "ebooks.json";
+		private const string EBOOKS_FOLDER = "ebooks";
 
 		public Dictionary<int, Book> Items
 		{
@@ -116,7 +118,7 @@ namespace gITEBooksGrabber
 				b.Format = hdoc.DocumentNode.SelectSingleNode("//*[@itemprop='bookFormat']").InnerText.ToLower().Trim();
 				b.DownloadLink = hdoc.DocumentNode.SelectNodes("//a").ToList().Where(item => item.Attributes["href"].Value.Contains("filepi.com")).First().Attributes["href"].Value;
 				b.FileName = string.Format("{0}.{1}", b.Title, b.Format);
-				b.SavePath = Path.Combine(b.Publisher, b.Title, b.FileName);
+				b.SavePath = Path.Combine(EBOOKS_FOLDER, b.Publisher, b.Title, b.FileName);
 				b.Downloaded = false;
 				return b;
 			}
