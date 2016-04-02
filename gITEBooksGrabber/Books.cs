@@ -126,7 +126,7 @@ namespace gITEBooksGrabber
 				b.Format = hdoc.DocumentNode.SelectSingleNode("//*[@itemprop='bookFormat']").InnerText.ToLower().Trim();
 				b.DownloadLink = hdoc.DocumentNode.SelectNodes("//a").ToList().Where(item => item.Attributes["href"].Value.Contains("filepi.com")).First().Attributes["href"].Value;
 				b.FileName = string.Format("{0}.{1}", b.Title, b.Format);
-				b.SavePath = Path.Combine(EBOOKS_FOLDER, b.Publisher, b.Title, b.FileName);
+				b.SavePath = Path.Combine(EBOOKS_FOLDER, b.Publisher, shortenFilename(b.Title), b.FileName);
 				b.Downloaded = false;
 				return b;
 			}
@@ -143,6 +143,18 @@ namespace gITEBooksGrabber
 			return String.Join("_", path.Split(invalidChars, StringSplitOptions.RemoveEmptyEntries));
 		}
 
+		private string shortenFilename(string filename)
+		{
+			if (filename.Length > 32)
+			{
+				return filename.Substring(0, 32) + "-";
+			}
+			else
+			{
+				return filename;
+			}
+		}
+
 		private async Task<bool> saveBook(Book b)
 		{
 			try
@@ -156,6 +168,7 @@ namespace gITEBooksGrabber
 			catch (Exception ex)
 			{
 				Console.WriteLine(string.Format("\rUnable to download Book #{0} : {1}", b.ID, b.Title).PadRight(Console.BufferWidth));
+				Console.WriteLine(string.Format("{0} {1}", b.DownloadLink, b.URL));
 				Console.WriteLine(ex.Message);
 				deleteFile(b.SavePath);
 				b.Downloaded = false;
